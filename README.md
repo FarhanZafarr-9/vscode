@@ -1,76 +1,53 @@
-# Visual Studio Code - Open Source ("Code - OSS")
-[![Feature Requests](https://img.shields.io/github/issues/microsoft/vscode/feature-request.svg)](https://github.com/microsoft/vscode/issues?q=is%3Aopen+is%3Aissue+label%3Afeature-request+sort%3Areactions-%2B1-desc)
-[![Bugs](https://img.shields.io/github/issues/microsoft/vscode/bug.svg)](https://github.com/microsoft/vscode/issues?utf8=✓&q=is%3Aissue+is%3Aopen+label%3Abug)
+# Intelligent Developer OS
 
-## The Repository
+Intelligent Developer OS is a final-year project built as a native fork of Code - OSS. It integrates AI model routing and edit review into the editor while supporting fully manual development. The project index powers repository navigation and analysis with AI turned off.
 
-This repository ("`Code - OSS`") is where we (Microsoft) develop the [Visual Studio Code](https://code.visualstudio.com) product together with the community. Not only do we work on code and issues here, but we also publish our [roadmap](https://github.com/microsoft/vscode/wiki/Roadmap), [monthly iteration plans](https://github.com/microsoft/vscode/wiki/Iteration-Plans), and our [endgame plans](https://github.com/microsoft/vscode/wiki/Running-the-Endgame). This source code is available to everyone under the standard [MIT license](https://github.com/microsoft/vscode/blob/main/LICENSE.txt).
+## Feature roadmap
 
-## Visual Studio Code
+The lists below describe the planned scope for each project phase.
 
-<p align="center">
-  <img alt="VS Code in action" src="https://github.com/user-attachments/assets/56af271c-949d-454c-a3ea-16188c063414">
-</p>
+### FYP-I feature checklist
 
-[Visual Studio Code](https://code.visualstudio.com) is a distribution of the `Code - OSS` repository with Microsoft-specific customizations released under a traditional [Microsoft product license](https://code.visualstudio.com/License/).
+Pick any unchecked item and note your claim in the issue or pull request. Prerequisites indicate what must be ready for integration. You can start against a stub or fixture while a dependency is being built.
 
-[Visual Studio Code](https://code.visualstudio.com) combines the simplicity of a code editor with what developers need for their core edit-build-debug cycle. It provides comprehensive code editing, navigation, and understanding support along with lightweight debugging, a rich extensibility model, and lightweight integration with existing tools.
+- [ ] **F1 · Code - OSS foundation** — Pin the upstream revision and document a reproducible Windows development build. **Prerequisites** — None.
+- [ ] **F2 · Project Index** — Scan workspace files, extract symbols and dependency edges through language adapters, and update the SQLite index as files change. **Prerequisites** — F1 for integration.
+- [ ] **F3 · Provider catalog and credentials** — Build the shared provider interface, gateway client, model catalog, and secure credential storage. Verify access to at least three free-tier providers. **Prerequisites** — F1 for integration.
+- [ ] **F4 · Provider onboarding** — Guide developers through saving a gateway credential and checking the connection. **Prerequisites** — F3's credential and connection-check interfaces.
+- [ ] **F5 · Prompt Classifier and Model Router (M1)** — Classify request complexity, rank models by quality, quota, latency, and cost, and try fallbacks after failures or rate limits. **Prerequisites** — F2's index query interface and F3's provider and catalog interfaces.
+- [ ] **F6 · Context Budget Indicator** — Show estimated context use against the selected model's window. **Prerequisites** — F3's model limits and F5's routing result with a context estimate.
+- [ ] **F7 · Project Dashboard** — Show workspace structure and index status. **Prerequisites** — F2's file and index-status queries.
+- [ ] **F8 · File Connectivity Graph** — Visualize indexed files and the import relationships between them. **Prerequisites** — F2's dependency graph query.
+- [ ] **F9 · Git panel and commit grouping** — Review repository changes and group related changes into commits. **Prerequisites** — F1 for integration and a local Git repository with sample changes for validation.
+- [ ] **F10 · Workflow Builder** — Configure and run recurring development tasks from the editor. **Prerequisites** — F1 for integration and a sample workspace task to exercise the workflow.
 
-Visual Studio Code is updated monthly with new features and bug fixes. You can download it for Windows, macOS, and Linux on the [Visual Studio Code website](https://code.visualstudio.com/Download). To get the latest releases every day, install the [Insiders build](https://code.visualstudio.com/insiders).
+### FYP-II — Context, edit review, and automation
 
-## Contributing
+- **Context Chunker and Multi-Model Orchestrator (M2)** — Select relevant repository context, split it when it exceeds the model's context window, and combine results across calls.
+- **Pre-Edit Hallucination Guard (M3)** — Check proposed edits for relevance and structural consistency before applying them. Hold doubtful edits for the developer to approve, revise, or reject.
+- **Causal Summarizer and Reasoning Timeline (M4)** — Record proposed changes, the model's stated rationale, and what was applied, held, or rejected.
+- **Code Health Suite** — Surface findings from static analysis with AI disabled.
+- **Deployment automation** — Extend the Workflow Builder to run deployment sequences.
 
-There are many ways in which you can participate in this project, for example:
+## Research
 
-* [Submit bugs and feature requests](https://github.com/microsoft/vscode/issues), and help us verify them as they are checked in
-* Review [source code changes](https://github.com/microsoft/vscode/pulls)
-* Review the [documentation](https://github.com/microsoft/vscode-docs) and make pull requests for anything from typos to new content.
+The project uses a benchmark of repository tasks to study two questions.
 
-If you are interested in fixing issues and contributing directly to the codebase, please see the document [How to Contribute](https://github.com/microsoft/vscode/wiki/How-to-Contribute), which covers the following:
+1. How does multi-model routing affect task success, latency, and quota use compared with a fixed model?
+2. How does pre-edit verification affect the rate of incorrect or irrelevant edits reaching the source tree?
 
-* [How to build and run from source](https://github.com/microsoft/vscode/wiki/How-to-Contribute)
-* [The development workflow, including debugging and running tests](https://github.com/microsoft/vscode/wiki/How-to-Contribute#debugging)
-* [Coding guidelines](https://github.com/microsoft/vscode/wiki/Coding-Guidelines)
-* [Submitting pull requests](https://github.com/microsoft/vscode/wiki/How-to-Contribute#pull-requests)
-* [Finding an issue to work on](https://github.com/microsoft/vscode/wiki/How-to-Contribute#where-to-contribute)
-* [Contributing to translations](https://aka.ms/vscodeloc)
+The evaluation compares a fixed-model baseline with routing enabled, verification enabled, and both enabled.
 
-## Feedback
+## Development
 
-* Ask a question on [Stack Overflow](https://stackoverflow.com/questions/tagged/vscode)
-* [Request a new feature](CONTRIBUTING.md)
-* Upvote [popular feature requests](https://github.com/microsoft/vscode/issues?q=is%3Aopen+is%3Aissue+label%3Afeature-request+sort%3Areactions-%2B1-desc)
-* [File an issue](https://github.com/microsoft/vscode/issues)
-* Connect with the extension author community on [GitHub Discussions](https://github.com/microsoft/vscode-discussions/discussions) or [Slack](https://aka.ms/vscode-dev-community)
-* Follow [@code](https://x.com/code) and let us know what you think!
+The fork follows the [repository coding and validation guidelines](.github/copilot-instructions.md). For the upstream build and debugging workflow, see the [Code - OSS contributor guide](https://github.com/microsoft/vscode/wiki/How-to-Contribute). The repository also includes a [development container](.devcontainer/README.md).
 
-See our [wiki](https://github.com/microsoft/vscode/wiki/Feedback-Channels) for a description of each of these channels and information on some other available community-driven channels.
+## Team
 
-## Related Projects
+- Farhan Zafar, Muhammad Ali, and Abdul Rehman
+- Project advisor Ms. Sana Fatima
+- FAST National University of Computer and Emerging Sciences, Lahore
 
-Many of the core components and extensions to VS Code live in their own repositories on GitHub. For example, the [node debug adapter](https://github.com/microsoft/vscode-node-debug) and the [mono debug adapter](https://github.com/microsoft/vscode-mono-debug) repositories are separate from each other. For a complete list, please visit the [Related Projects](https://github.com/microsoft/vscode/wiki/Related-Projects) page on our [wiki](https://github.com/microsoft/vscode/wiki).
+## Upstream and license
 
-## Bundled Extensions
-
-VS Code includes a set of built-in extensions located in the [extensions](extensions) folder, including grammars and snippets for many languages. Extensions that provide rich language support (inline suggestions, Go to Definition) for a language have the suffix `language-features`. For example, the `json` extension provides coloring for `JSON` and the `json-language-features` extension provides rich language support for `JSON`.
-
-## Development Container
-
-This repository includes a Visual Studio Code Dev Containers / GitHub Codespaces development container.
-
-* For [Dev Containers](https://aka.ms/vscode-remote/download/containers), use the **Dev Containers: Clone Repository in Container Volume...** command, which creates a Docker volume for better disk I/O on macOS and Windows.
-  * If you already have VS Code and Docker installed, you can also click [here](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/microsoft/vscode) to get started. This will cause VS Code to automatically install the Dev Containers extension if needed, clone the source code into a container volume, and spin up a dev container for use.
-
-* For Codespaces, install the [GitHub Codespaces](https://marketplace.visualstudio.com/items?itemName=GitHub.codespaces) extension in VS Code, and use the **Codespaces: Create New Codespace** command.
-
-Docker / the Codespace should have at least **4 cores and 6 GB of RAM (8 GB recommended)** to run a full build. See the [development container README](.devcontainer/README.md) for more information.
-
-## Code of Conduct
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
-## License
-
-Copyright (c) Microsoft Corporation. All rights reserved.
-
-Licensed under the [MIT](LICENSE.txt) license.
+Intelligent Developer OS is based on [Code - OSS](https://github.com/microsoft/vscode). The upstream source is copyright Microsoft Corporation and is licensed under the [MIT License](LICENSE.txt).
